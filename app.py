@@ -256,19 +256,9 @@ def detect():
 
 
 # ---------- MAIN ----------
-
 import os
 
 if __name__ == "__main__":
-
-    tracker_thread = threading.Thread(
-        target=screen_tracker.start_tracking
-    )
-
-    tracker_thread.daemon = True
-    tracker_thread.start()
-
     port = int(os.environ.get("PORT", 10000))
-
     app.run(host="0.0.0.0", port=port)
 
