@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Fatigue Detection</title>
+</head>
+
+<body>
+
+<h2>AI Fatigue Detection</h2>
+
+<p>Allow camera access and click Scan.</p>
+
+<video id="video" width="640" height="480" autoplay></video>
+
+<br><br>
+
+<button onclick="capture()">Scan Fatigue</button>
+
+<script>
+
+let video = document.getElementById("video");
+
+navigator.mediaDevices.getUserMedia({video:true})
+.then(function(stream){
+    video.srcObject = stream;
+})
+.catch(function(){
+    alert("Camera access denied");
+});
+
+function capture(){
+
+    let canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(video,0,0);
+
+    canvas.toBlob(function(blob){
+
+        let formData = new FormData();
+        formData.append("image", blob);
+
+        fetch("/detect", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+        });
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
