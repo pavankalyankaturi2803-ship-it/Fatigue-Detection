@@ -257,6 +257,8 @@ def detect():
 
 # ---------- MAIN ----------
 
+import os
+
 if __name__ == "__main__":
 
     tracker_thread = threading.Thread(
@@ -264,9 +266,9 @@ if __name__ == "__main__":
     )
 
     tracker_thread.daemon = True
-
     tracker_thread.start()
 
-    print("Starting Flask Server...")
+    port = int(os.environ.get("PORT", 10000))
 
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=port)
+
